@@ -353,7 +353,18 @@ public class InterfazGrafica extends JFrame {
 
         botonPresupuesto.addActionListener(e -> {
             try {
-                presupuestoInicial = Double.parseDouble(campoPresupuesto.getText());
+
+                String texto = campoPresupuesto.getText().trim();
+                if (!texto.matches("\\d+(\\.\\d+)?")) {
+                    JOptionPane.showMessageDialog(this, "Ingrese solo números válidos y positivos.");
+                    return;
+                }
+                presupuestoInicial = Double.parseDouble(texto);
+                if (presupuestoInicial < 0) {
+                    JOptionPane.showMessageDialog(this, "No se permiten valores negativos.");
+                    return;
+                }
+
                 presupuestoActual = presupuestoInicial;
                 etiquetaPresupuesto.setText("Presupuesto Actual: $" + presupuestoActual);
                 layout.show(getContentPane(), "Principal");
@@ -364,11 +375,24 @@ public class InterfazGrafica extends JFrame {
 
         botonAgregarProducto.addActionListener(e -> {
             try {
+
                 String nombre = campoNombreProducto.getText();
+                if (!nombre.matches("[a-zA-ZáéíóúÁÉÍÓÚñÑ ]+")) {
+                    JOptionPane.showMessageDialog(this, "El nombre del producto no debe contener números.");
+                    return;
+                }
+
                 double precioUnitario = Double.parseDouble(campoPrecioUnitario.getText());
                 double precioVenta = Double.parseDouble(campoPrecioVenta.getText());
                 String fecha = campoFechaLlegada.getText();
-                int cantidad = Integer.parseInt(campoCantidad.getText());
+
+                String cantidadTexto = campoCantidad.getText().trim();
+                if (!cantidadTexto.matches("\\d+")) {
+                    JOptionPane.showMessageDialog(this, "Ingrese una cantidad válida (solo números positivos).");
+                    return;
+                }
+                int cantidad = Integer.parseInt(cantidadTexto);
+
                 double costoTotal = precioUnitario * cantidad;
 
                 if (costoTotal <= presupuestoActual) {
@@ -387,11 +411,24 @@ public class InterfazGrafica extends JFrame {
             int filaSeleccionada = tablaInventario.getSelectedRow();
             if (filaSeleccionada != -1) {
                 try {
+
                     String nombre = campoNombreProducto.getText();
+                    if (!nombre.matches("[a-zA-ZáéíóúÁÉÍÓÚñÑ ]+")) {
+                        JOptionPane.showMessageDialog(this, "El nombre del producto no debe contener números.");
+                        return;
+                    }
+
                     double precioUnitario = Double.parseDouble(campoPrecioUnitario.getText());
                     double precioVenta = Double.parseDouble(campoPrecioVenta.getText());
                     String fecha = campoFechaLlegada.getText();
-                    int cantidad = Integer.parseInt(campoCantidad.getText());
+
+                    String cantidadTexto = campoCantidad.getText().trim();
+                    if (!cantidadTexto.matches("\\d+")) {
+                        JOptionPane.showMessageDialog(this, "Ingrese una cantidad válida (solo números positivos).");
+                        return;
+                    }
+                    int cantidad = Integer.parseInt(cantidadTexto);
+
 
                     double precioAnterior = (double) modeloTablaInventario.getValueAt(filaSeleccionada, 1);
                     int cantidadAnterior = (int) modeloTablaInventario.getValueAt(filaSeleccionada, 4);
@@ -441,7 +478,23 @@ public class InterfazGrafica extends JFrame {
             String telefono = campoTelefonoProveedor.getText();
             String correo = campoCorreoProveedor.getText();
             String producto = campoProductoProveedor.getText();
+
+
             if (!nombre.isEmpty() && !telefono.isEmpty() && !correo.isEmpty() && !producto.isEmpty()) {
+                if (!nombre.matches("[a-zA-ZáéíóúÁÉÍÓÚñÑ ]+")) {
+                    JOptionPane.showMessageDialog(this, "El nombre del proveedor no debe contener números.");
+                    return;
+                }
+                if (!producto.matches("[a-zA-ZáéíóúÁÉÍÓÚñÑ, ]+")) {
+                    JOptionPane.showMessageDialog(this, "El campo de productos no debe contener números.");
+                    return;
+                }
+
+                if (!telefono.matches("\\d{10}")) {
+                    JOptionPane.showMessageDialog(this, "El teléfono debe tener exactamente 10 dígitos.");
+                    return;
+                }
+
                 modeloTablaProveedores.addRow(new Object[]{nombre, telefono, correo, producto});
                 campoNombreProveedor.setText("");
                 campoTelefonoProveedor.setText("");
@@ -461,7 +514,23 @@ public class InterfazGrafica extends JFrame {
                     String correo = campoCorreoProveedor.getText();
                     String producto = campoProductoProveedor.getText();
 
+
+
                     if (!nombre.isEmpty() && !telefono.isEmpty() && !correo.isEmpty() && !producto.isEmpty()) {
+                        if (!nombre.matches("[a-zA-ZáéíóúÁÉÍÓÚñÑ ]+")) {
+                            JOptionPane.showMessageDialog(this, "El nombre del proveedor no debe contener números.");
+                            return;
+                        }
+                        if (!producto.matches("[a-zA-ZáéíóúÁÉÍÓÚñÑ, ]+")) {
+                            JOptionPane.showMessageDialog(this, "El campo de productos no debe contener números.");
+                            return;
+                        }
+
+                        if (!telefono.matches("\\d{10}")) {
+                            JOptionPane.showMessageDialog(this, "El teléfono debe tener exactamente 10 dígitos.");
+                            return;
+                        }
+
                         modeloTablaProveedores.setValueAt(nombre, filaSeleccionada, 0);
                         modeloTablaProveedores.setValueAt(telefono, filaSeleccionada, 1);
                         modeloTablaProveedores.setValueAt(correo, filaSeleccionada, 2);
