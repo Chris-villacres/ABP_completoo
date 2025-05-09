@@ -1,6 +1,7 @@
 package Views;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.util.HashMap;
@@ -19,7 +20,6 @@ public class InterfazGrafica extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new CardLayout());
 
-        // Panel de creación de usuario
         JPanel panelCrearUsuario = new JPanel(new GridLayout(3, 2));
         JTextField campoUsuario = new JTextField();
         JPasswordField campoContrasena = new JPasswordField();
@@ -31,7 +31,6 @@ public class InterfazGrafica extends JFrame {
         panelCrearUsuario.add(new JLabel());
         panelCrearUsuario.add(botonCrearUsuario);
 
-        // Panel de inicio de sesión
         JPanel panelLogin = new JPanel(new GridLayout(3, 2));
         JTextField campoUsuarioLogin = new JTextField();
         JPasswordField campoContrasenaLogin = new JPasswordField();
@@ -43,7 +42,6 @@ public class InterfazGrafica extends JFrame {
         panelLogin.add(new JLabel());
         panelLogin.add(botonLogin);
 
-        // Panel de presupuesto
         JPanel panelPresupuesto = new JPanel(new GridLayout(2, 2));
         JTextField campoPresupuesto = new JTextField();
         JButton botonPresupuesto = new JButton("Establecer Presupuesto");
@@ -52,10 +50,8 @@ public class InterfazGrafica extends JFrame {
         panelPresupuesto.add(new JLabel());
         panelPresupuesto.add(botonPresupuesto);
 
-        // Panel principal con pestañas
         JTabbedPane tabbedPane = new JTabbedPane();
 
-        // Pestaña Inventario
         JPanel panelInventario = new JPanel(new BorderLayout());
         JPanel panelFormularioInventario = new JPanel(new GridLayout(6, 2));
         JTextField campoNombreProducto = new JTextField();
@@ -64,7 +60,6 @@ public class InterfazGrafica extends JFrame {
         JTextField campoFechaLlegada = new JTextField();
         JTextField campoCantidad = new JTextField();
         JButton botonAgregarProducto = new JButton("Agregar Producto");
-        JButton botonEditarProducto = new JButton("Editar Producto");
         JButton botonEliminarProducto = new JButton("Eliminar Producto");
         panelFormularioInventario.add(new JLabel("Nombre:"));
         panelFormularioInventario.add(campoNombreProducto);
@@ -77,7 +72,6 @@ public class InterfazGrafica extends JFrame {
         panelFormularioInventario.add(new JLabel("Cantidad:"));
         panelFormularioInventario.add(campoCantidad);
         panelFormularioInventario.add(botonAgregarProducto);
-        panelFormularioInventario.add(botonEditarProducto);
 
         modeloTablaInventario = new DefaultTableModel(new String[]{"Nombre", "Precio Unitario", "Precio Venta", "Fecha", "Cantidad"}, 0);
         tablaInventario = new JTable(modeloTablaInventario);
@@ -87,50 +81,46 @@ public class InterfazGrafica extends JFrame {
         panelInventario.add(scrollTablaInventario, BorderLayout.CENTER);
         panelInventario.add(botonEliminarProducto, BorderLayout.SOUTH);
 
-        // Pestaña Entradas
-        JPanel panelEntradas = new JPanel(new BorderLayout());
-        DefaultTableModel modeloTablaEntradas = new DefaultTableModel(new String[]{"Producto", "Recibido"}, 0);
-        JTable tablaEntradas = new JTable(modeloTablaEntradas) {
-            @Override
-            public Class<?> getColumnClass(int column) {
-                return column == 1 ? Boolean.class : String.class;
-            }
-        };
-        JScrollPane scrollTablaEntradas = new JScrollPane(tablaEntradas);
-        panelEntradas.add(scrollTablaEntradas, BorderLayout.CENTER);
+        JPanel panelSalidas = new JPanel(new BorderLayout());
+        panelSalidas.setBorder(new EmptyBorder(10, 10, 10, 10));
+        panelSalidas.setBackground(Color.WHITE);
 
-        // Pestaña Salidas
-        JPanel panelSalidas = new JPanel(new GridLayout(4, 2));
+        JPanel panelFormularioSalidas = new JPanel(new GridLayout(4, 2, 10, 10));
         JTextField campoNombreSalida = new JTextField();
         JTextField campoCantidadSalida = new JTextField();
         JComboBox<String> comboTipoSalida = new JComboBox<>(new String[]{"Venta", "Desperdicio"});
         JButton botonRegistrarSalida = new JButton("Registrar Salida");
-        panelSalidas.add(new JLabel("Nombre Producto:"));
-        panelSalidas.add(campoNombreSalida);
-        panelSalidas.add(new JLabel("Cantidad:"));
-        panelSalidas.add(campoCantidadSalida);
-        panelSalidas.add(new JLabel("Tipo de Salida:"));
-        panelSalidas.add(comboTipoSalida);
-        panelSalidas.add(botonRegistrarSalida);
 
-        // Pestaña Presupuesto
+        panelFormularioSalidas.add(new JLabel("Nombre Producto:"));
+        panelFormularioSalidas.add(campoNombreSalida);
+        panelFormularioSalidas.add(new JLabel("Cantidad:"));
+        panelFormularioSalidas.add(campoCantidadSalida);
+        panelFormularioSalidas.add(new JLabel("Tipo de Salida:"));
+        panelFormularioSalidas.add(comboTipoSalida);
+        panelFormularioSalidas.add(new JLabel());
+        panelFormularioSalidas.add(botonRegistrarSalida);
+
+        DefaultTableModel modeloTablaSalidas = new DefaultTableModel(
+                new String[]{"Producto", "Cantidad", "Forma de Salida", "Presupuesto Actual"}, 0);
+        JTable tablaSalidas = new JTable(modeloTablaSalidas);
+        JScrollPane scrollTablaSalidas = new JScrollPane(tablaSalidas);
+
+        panelSalidas.add(panelFormularioSalidas, BorderLayout.NORTH);
+        panelSalidas.add(scrollTablaSalidas, BorderLayout.CENTER);
+
         JPanel panelPresupuestoTab = new JPanel(new BorderLayout());
         JLabel etiquetaPresupuesto = new JLabel("Presupuesto Actual: $0.00");
         panelPresupuestoTab.add(etiquetaPresupuesto, BorderLayout.CENTER);
 
-        // Agregar pestañas al TabbedPane
         tabbedPane.addTab("Inventario", panelInventario);
-        tabbedPane.addTab("Entradas", panelEntradas);
         tabbedPane.addTab("Salidas", panelSalidas);
         tabbedPane.addTab("Presupuesto", panelPresupuestoTab);
 
-        // Agregar paneles al JFrame
         add(panelCrearUsuario, "CrearUsuario");
         add(panelLogin, "Login");
         add(panelPresupuesto, "Presupuesto");
         add(tabbedPane, "Principal");
 
-        // Listeners
         CardLayout layout = (CardLayout) getContentPane().getLayout();
 
         botonCrearUsuario.addActionListener(e -> {
@@ -157,50 +147,72 @@ public class InterfazGrafica extends JFrame {
                 etiquetaPresupuesto.setText("Presupuesto Actual: $" + presupuestoActual);
                 layout.show(getContentPane(), "Principal");
             } catch (NumberFormatException ex) {
-                // Handle invalid input
+                JOptionPane.showMessageDialog(this, "Ingrese un número válido para el presupuesto.");
             }
         });
 
         botonAgregarProducto.addActionListener(e -> {
-            String nombre = campoNombreProducto.getText();
-            double precioUnitario = Double.parseDouble(campoPrecioUnitario.getText());
-            double precioVenta = Double.parseDouble(campoPrecioVenta.getText());
-            String fecha = campoFechaLlegada.getText();
-            int cantidad = Integer.parseInt(campoCantidad.getText());
-            double costoTotal = precioUnitario * cantidad;
+            try {
+                String nombre = campoNombreProducto.getText();
+                double precioUnitario = Double.parseDouble(campoPrecioUnitario.getText());
+                double precioVenta = Double.parseDouble(campoPrecioVenta.getText());
+                String fecha = campoFechaLlegada.getText();
+                int cantidad = Integer.parseInt(campoCantidad.getText());
+                double costoTotal = precioUnitario * cantidad;
 
-            if (costoTotal <= presupuestoActual) {
-                modeloTablaInventario.addRow(new Object[]{nombre, precioUnitario, precioVenta, fecha, cantidad});
-                presupuestoActual -= costoTotal;
-                etiquetaPresupuesto.setText("Presupuesto Actual: $" + presupuestoActual);
+                if (costoTotal <= presupuestoActual) {
+                    modeloTablaInventario.addRow(new Object[]{nombre, precioUnitario, precioVenta, fecha, cantidad});
+                    presupuestoActual -= costoTotal;
+                    etiquetaPresupuesto.setText("Presupuesto Actual: $" + presupuestoActual);
+                } else {
+                    JOptionPane.showMessageDialog(this, "Presupuesto insuficiente para agregar este producto.");
+                }
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(this, "Ingrese valores numéricos válidos.");
             }
         });
 
         botonEliminarProducto.addActionListener(e -> {
             int filaSeleccionada = tablaInventario.getSelectedRow();
             if (filaSeleccionada != -1) {
+                double precioUnitario = (double) modeloTablaInventario.getValueAt(filaSeleccionada, 1);
+                int cantidad = (int) modeloTablaInventario.getValueAt(filaSeleccionada, 4);
+                double costoTotal = precioUnitario * cantidad;
+
+                presupuestoActual += costoTotal;
+                etiquetaPresupuesto.setText("Presupuesto Actual: $" + presupuestoActual);
+
                 modeloTablaInventario.removeRow(filaSeleccionada);
+            } else {
+                JOptionPane.showMessageDialog(this, "Por favor, seleccione un producto para eliminar.");
             }
         });
 
         botonRegistrarSalida.addActionListener(e -> {
-            String nombre = campoNombreSalida.getText();
-            int cantidad = Integer.parseInt(campoCantidadSalida.getText());
-            String tipo = (String) comboTipoSalida.getSelectedItem();
+            try {
+                String nombre = campoNombreSalida.getText();
+                int cantidad = Integer.parseInt(campoCantidadSalida.getText());
+                String tipo = (String) comboTipoSalida.getSelectedItem();
 
-            for (int i = 0; i < modeloTablaInventario.getRowCount(); i++) {
-                if (modeloTablaInventario.getValueAt(i, 0).equals(nombre)) {
-                    int cantidadActual = (int) modeloTablaInventario.getValueAt(i, 4);
-                    if (cantidad <= cantidadActual) {
-                        modeloTablaInventario.setValueAt(cantidadActual - cantidad, i, 4);
-                        if ("Venta".equals(tipo)) {
-                            double precioVenta = (double) modeloTablaInventario.getValueAt(i, 2);
-                            presupuestoActual += cantidad * precioVenta;
-                            etiquetaPresupuesto.setText("Presupuesto Actual: $" + presupuestoActual);
+                for (int i = 0; i < modeloTablaInventario.getRowCount(); i++) {
+                    if (modeloTablaInventario.getValueAt(i, 0).equals(nombre)) {
+                        int cantidadActual = (int) modeloTablaInventario.getValueAt(i, 4);
+                        if (cantidad <= cantidadActual) {
+                            modeloTablaInventario.setValueAt(cantidadActual - cantidad, i, 4);
+                            if ("Venta".equals(tipo)) {
+                                double precioVenta = (double) modeloTablaInventario.getValueAt(i, 2);
+                                presupuestoActual += cantidad * precioVenta;
+                                etiquetaPresupuesto.setText("Presupuesto Actual: $" + presupuestoActual);
+                            }
+                            modeloTablaSalidas.addRow(new Object[]{nombre, cantidad, tipo, presupuestoActual});
+                        } else {
+                            JOptionPane.showMessageDialog(this, "Cantidad insuficiente en inventario.");
                         }
+                        break;
                     }
-                    break;
                 }
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(this, "Campos numéricos inválidos.");
             }
         });
     }
