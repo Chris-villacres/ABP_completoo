@@ -130,6 +130,7 @@ public class Inventario {
         }
     }
 
+
     public void crearusuario(String nombreUsuario, String contrasena) {
         Usuario.crearUsuario(nombreUsuario, contrasena);
         System.out.println("Usuario " + nombreUsuario + " creado exitosamente.");
@@ -143,38 +144,15 @@ public class Inventario {
         }
     }
 
-    public void fechareabastecimiento(String nombre, String fecha) {
+    public void fechareabastecimiento
+            (String nombre, LocalDate fechaReabastecimiento) {
         Producto producto = buscarProducto(nombre);
         if (producto != null) {
-            Reabastecimiento reabastecimiento = new Reabastecimiento(LocalDate.parse(fecha), producto.getPrecio());
-            System.out.println("Reabastecimiento registrado para el producto " + nombre + " en la fecha " + fecha);
+            producto.setFecha(fechaReabastecimiento.toString());
+            System.out.println("La fecha de reabastecimiento del producto " + nombre + " ha sido actualizada a " + fechaReabastecimiento);
         } else {
             System.out.println("El producto " + nombre + " no se encuentra en el inventario.");
         }
     }
 
-
-    public void gananciasalida(String nombre, int cantidad, String tipoSalida) {
-        Producto producto = buscarProducto(nombre);
-        if (producto != null) {
-            if (producto.getCantidad() >= cantidad) {
-                double ganancia = cantidad * producto.getPrecioventa();
-                System.out.println("Ganancia de la salida del producto " + nombre + ": " + ganancia);
-            } else {
-                System.out.println("No hay suficiente cantidad del producto " + nombre + " para calcular la ganancia.");
-            }
-        } else {
-            System.out.println("El producto " + nombre + " no se encuentra en el inventario.");
-        }
-    }
-
-    public void perdidaentrada(String nombre, int cantidad, double precioUnitario) {
-        Producto producto = buscarProducto(nombre);
-        if (producto != null) {
-            double ganancia = cantidad * precioUnitario;
-            System.out.println("Ganancia de la entrada del producto " + nombre + ": " + ganancia);
-        } else {
-            System.out.println("El producto " + nombre + " no se encuentra en el inventario.");
-        }
-    }
 }

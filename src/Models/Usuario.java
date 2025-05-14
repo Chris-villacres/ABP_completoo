@@ -29,10 +29,9 @@ public class Usuario {
         this.contrasena = contrasena;
     }
 
-    // Static methods for user management
     public static boolean crearUsuario(String nombreUsuario, String contrasena) {
         if (usuarios.containsKey(nombreUsuario)) {
-            return false; // Usuario ya existe
+            return false;
         }
         usuarios.put(nombreUsuario, contrasena);
         return true;

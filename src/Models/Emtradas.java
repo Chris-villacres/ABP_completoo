@@ -3,12 +3,12 @@ package Models;
 public class Emtradas {
     private double total;
     private double costo;
-    private double ganancia;
+    private double gasto;
 
-    public Emtradas(double total, double costo, double ganancia) {
+    public Emtradas(double total, double costo, double gasto) {
         this.total = total;
         this.costo = costo;
-        this.ganancia = ganancia;
+        this.gasto = gasto;
     }
 
     public double getTotal() {
@@ -28,10 +28,10 @@ public class Emtradas {
     }
 
     public double getGanancia() {
-        return ganancia;
+        return gasto;
     }
 
     public void setGanancia(double ganancia) {
-        this.ganancia = ganancia;
+        this.gasto = ganancia;
     }
 }
